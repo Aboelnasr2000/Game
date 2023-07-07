@@ -34,15 +34,12 @@ export const gamesRouter = new express.Router()
 
 gamesRouter.post('/passwordChallenge/addPlayer', upload.single('image'), async (req, res) => {
     const player = new passwordChallenge()
-    console.log(req.body)
     player.name = req.body.name
-
-    // console.log(req.file.buffer)
+    // console.log(req.file.buffr)
     const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
     player.image= buffer
 
     try {
-        console.log(player.name)
         await player.save()
         res.status(201).send(player)
     } catch (e) {
