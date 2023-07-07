@@ -35,7 +35,6 @@ export const gamesRouter = new express.Router()
 gamesRouter.post('/passwordChallenge/addPlayer', upload.single('image'), async (req, res) => {
     const player = new passwordChallenge()
     player.name = req.body.name
-    // console.log(req.file.buffr)
     const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
     player.image= buffer
 
@@ -52,9 +51,7 @@ gamesRouter.get('/passwordChallenge/player', async (req, res) => {
  
     const players = await passwordChallenge.find()
     const count = players.length
-    console.log(count)
     const skips = Math.floor((Math.random() * count));
-    console.log("Skkips" , skips)
     const player = await passwordChallenge.find().limit(1).skip(skips)
     res.status(201).send(player)
 
