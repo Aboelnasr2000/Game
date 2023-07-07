@@ -50,10 +50,10 @@ gamesRouter.post('/passwordChallenge/addPlayer', upload.single('image'), async (
 gamesRouter.get('/passwordChallenge/player', async (req, res) => {
  
     const players = await passwordChallenge.find()
-    const count = players.length
-    const skips = Math.floor((Math.random() * count));
-    const player = await passwordChallenge.find().limit(1).skip(skips)
-    res.status(201).send(player)
+    // const count = players.length
+    // const skips = Math.floor((Math.random() * count));
+    // const player = await passwordChallenge.find().limit(1).skip(skips)
+    res.status(201).send(players)
 
 })
 
