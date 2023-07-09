@@ -2,13 +2,11 @@ const $generatePlayerButton = document.querySelector('#generatePlayer')
 const playerTemplate = document.querySelector('#player_template').innerHTML
 const $players = document.querySelector('#players')
 
-players = []
 async function allPlayers() {
     try {
         const response = await fetch('/passwordChallenge/player');
         const data = await response.json();
-        players = data
-        const shuffledPlayers = shuffleArray(players);
+        const shuffledPlayers = shuffleArray(data);
         return shuffledPlayers
     }
     catch (e) {
@@ -24,37 +22,51 @@ function shuffleArray(array) {
     }
     return array;
 }
+
+
+
 $generatePlayerButton.addEventListener('click', async () => {
 
     $generatePlayerButton.setAttribute('disabled', 'disabled')
 
-    // e.preventDefault() 
-    if (players.length == 0) {
-        await allPlayers()
+    // e.preventDefault()
+
+    //Get Data From Local Storage 
+    let myPlayers = undefined
+    try {
+        //Find The Data Locally
+        myPlayers = await localStorage.getItem('players');
+        myPlayers = await JSON.parse(myPlayers);
+        //Make Sure Local Data Is not Empty
+        if (myPlayers.length === 0){
+            throw Error()
+        }
+        console.log("Local")
     }
-    console.log(players)
-    index = Math.floor(Math.random() * (players.length))
-    
-    const playerName = players[index].name
-    const playerImage = players[index].image
-    players.splice(index,1)
-    console.log(players)
+    catch (e) {
+        // If No Local Data Get From Database 
+        myPlayers = await allPlayers()
+        console.log("Database")
+    }
+
+
+    //Choose Player At Random 
+    index = Math.floor(Math.random() * (myPlayers.length))
+    const playerName = myPlayers[index].name
+    const playerImage = myPlayers[index].image
+
+    //Remove Choosen Player
+    myPlayers.splice(index, 1)
+
+    //Display Choosen Player
     const html = Mustache.render(playerTemplate, { playerName, playerImage })
     document.querySelector('#players').innerHTML = html
+
+    //Store Remaining Players Locally
+    myPlayers = JSON.stringify(myPlayers);
+    localStorage.setItem('players', myPlayers);
+    
+    //Re-enable Button
     $generatePlayerButton.removeAttribute('disabled')
 })
 
-// async function generatePlayer() {
-//     // const response = await fetch('/passwordChallenge/player');
-//     // const data = await response.json();
-//     // console.log(data)
-
-//     let players = await allPlayers()
-//     // console.log(players)
-//     // const playerName = data[0].name
-//     // const playerImage = data[0].image
-//     // const html = Mustache.render(playerTemplate, { playerName, playerImage })
-//     // document.querySelector('#players').innerHTML = html
-// }
-
-// 
