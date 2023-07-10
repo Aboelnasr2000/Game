@@ -3,10 +3,7 @@ import multer from 'multer';
 import sharp from 'sharp';
 import { passwordChallenge } from '../models/passwordChallenge.js';
 import { guessThePlayer } from '../models/guessThPlayer.js';
-
-
-
-// const pdfParser = new pdf();
+import { v2 as cloudinary } from 'cloudinary';
 
 
 
@@ -29,6 +26,16 @@ const upload = multer({
 
 })
 
+// async function uploadImage(base64Data) {
+//     try {
+//       const result = await cloudinary.uploader.upload(base64Data);
+//       console.log("Here ")
+//       console.log(result);
+//     } catch (error) {
+//       console.error('Error uploading image:', error);
+//     }
+//   }
+
 
 export const gamesRouter = new express.Router()
 
@@ -36,8 +43,8 @@ gamesRouter.post('/passwordChallenge/addPlayer', upload.single('image'), async (
     const player = new passwordChallenge()
     player.name = req.body.name
     const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
-    player.image= buffer
-
+    player.image = buffer
+    // uploadImage(buffer);
     try {
         await player.save()
         res.status(201).send(player)
@@ -48,11 +55,8 @@ gamesRouter.post('/passwordChallenge/addPlayer', upload.single('image'), async (
 })
 
 gamesRouter.get('/passwordChallenge/player', async (req, res) => {
- 
+
     const players = await passwordChallenge.find()
-    // const count = players.length
-    // const skips = Math.floor((Math.random() * count));
-    // const player = await passwordChallenge.find().limit(1).skip(skips)
     res.status(201).send(players)
 
 })
@@ -71,12 +75,9 @@ gamesRouter.post('/guessThePlayer/addPlayer', upload.single('image'), async (req
 })
 
 gamesRouter.get('/guessThePlayer/player', async (req, res) => {
- 
+
     const players = await guessThePlayer.find()
-    const count = players.length
-    const skips = Math.floor((Math.random() * count));
-    const player = await guessThePlayer.find().limit(1).skip(skips)
-    res.status(201).send(player)
+    res.status(201).send(players)
 
 })
 

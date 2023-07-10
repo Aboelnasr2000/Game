@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Saba7o Ta7ady</title>
+    <link rel="icon" href="/img/LogoGAme.png">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="centered-form">
+        <div class="centered-form__box">
+            <h1>Guess The Player</h1>
+            <div id="clues" class="chat__messages"></div>
+            <div id="answer" class="chat__messages"></div>
+            <button id="showAnswer" disabled> Show Answer </button>
+            <button style="margin-top: 10px;" id="generatePlayer"> Next Player </button>
+        </div>
+
+        <script id="answer_template" type="text/html">
+            <div class="message">
+                <p>
+                    <span class="message__name"><h2>{{answer}}</h2></span>
+                </p>
+                <!-- <div class="myimage"><img id='base64image'src='data:image/jpeg;base64,{{playerImage}}' /></div> -->
+            </div>
+        </script>
+
+        <script id="clue_template" type="text/html">
+            <div class="message">
+                <p>
+                    <span class="message__name"><h3>{{clueIndex}} - {{clue}}</h3></span>
+                </p>
+                <!-- <div class="myimage"><img id='base64image'src='data:image/jpeg;base64,{{playerImage}}' /></div> -->
+            </div>
+        </script>
+
+
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="/js/GuessThePlayer.js"></script>
+</body>
+
+
+
+</html>
